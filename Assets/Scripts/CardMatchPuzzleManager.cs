@@ -58,10 +58,10 @@ public class CardMatchPuzzleManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        InitCardMatchingPuzzle(CloseAndDestroyPuzzle, CloseAndDestroyPuzzle);
-    }
+    //private void Start()
+    //{
+    //    InitCardMatchingPuzzle(CloseAndDestroyPuzzle, CloseAndDestroyPuzzle);
+    //}
 
     private void Shuffle<T>(List<T> list)
     {

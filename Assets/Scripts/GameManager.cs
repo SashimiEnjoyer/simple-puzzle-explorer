@@ -1,16 +1,24 @@
 using UnityEngine;
+using UnityEngine.Events;
+
+public enum GameState { Play, Puzzle}
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public UnityAction<GameState> OnGameStateChanged;
+    [SerializeField] private GameState currentState;
+    public GameState CurrentState
     {
-        
+        get {return currentState; }
+        set
+        {
+            if(value != currentState)
+            {
+                currentState = value;
+                OnGameStateChanged?.Invoke(currentState);
+            }
+        }
     }
+    
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

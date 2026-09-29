@@ -56,7 +56,7 @@ public class SlidingPuzzle : MonoBehaviour
 
     void Start()
     {
-        if (startOnAwake) 
+        if (startOnAwake)
             NewGame();
     }
 
