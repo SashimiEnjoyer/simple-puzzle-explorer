@@ -15,7 +15,6 @@ public class CardPuzzleEntity : MonoBehaviour
     [SerializeField] private GameObject cardVisualObj;
     [SerializeField] private Image cardImg;
     private bool isSolved = false;
-
     private CardMatchData cardData;
     public CardMatchData CardData => cardData;
 

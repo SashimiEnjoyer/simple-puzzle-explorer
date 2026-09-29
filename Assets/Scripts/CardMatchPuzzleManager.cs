@@ -14,12 +14,29 @@ public class CardMatchPuzzleManager : MonoBehaviour
     [SerializeField] private CardMatchData[] caradDatas;
     private List<CardPuzzleEntity> deck = new();
     private CardPuzzleEntity tempCard;
+    private UnityAction OnPuzzleFinish;
+    private UnityAction OnPuzzleClose;
     private int solvedCounter = 0;
+
+    private void Awake()
+    {
+        CloseBtn.onClick.AddListener(() =>
+        {
+            CloseAndDestroyPuzzle();
+            OnPuzzleClose?.Invoke();
+        });
+
+        FinishBtn.onClick.AddListener(() =>
+        {
+            CloseAndDestroyPuzzle();
+            OnPuzzleFinish?.Invoke();
+        });
+    }
 
     public void InitCardMatchingPuzzle(UnityAction onClose, UnityAction onFinish)
     {
-        CloseBtn.onClick.AddListener(onClose);
-        FinishBtn.onClick.AddListener(onFinish);
+        OnPuzzleClose = onClose;
+        OnPuzzleFinish = onFinish;
 
         FinishBtn.gameObject.SetActive(false);
 
@@ -97,5 +114,8 @@ public class CardMatchPuzzleManager : MonoBehaviour
         seq.AppendCallback(() => checkCardIndicatorObj.SetActive(false));
     }
 
-    private void CloseAndDestroyPuzzle() => Destroy(gameObject);
+    private void CloseAndDestroyPuzzle()
+    {
+        Destroy(gameObject);
+    }
 }
