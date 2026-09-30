@@ -4,41 +4,21 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class CardMatchPuzzleManager : MonoBehaviour
+public class CardMatchPuzzleManager : PuzzleManager
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardsParent;
     [SerializeField] private GameObject checkCardIndicatorObj;
-    [SerializeField] private Button CloseBtn;
-    [SerializeField] private Button FinishBtn;
+
     [SerializeField] private CardMatchData[] caradDatas;
     private List<CardPuzzleEntity> deck = new();
     private CardPuzzleEntity tempCard;
-    private UnityAction OnPuzzleFinish;
-    private UnityAction OnPuzzleClose;
+
     private int solvedCounter = 0;
 
-    private void Awake()
+    public override void InitPuzzle(UnityAction closeEvent, UnityAction finishedEvent)
     {
-        CloseBtn.onClick.AddListener(() =>
-        {
-            CloseAndDestroyPuzzle();
-            OnPuzzleClose?.Invoke();
-        });
-
-        FinishBtn.onClick.AddListener(() =>
-        {
-            CloseAndDestroyPuzzle();
-            OnPuzzleFinish?.Invoke();
-        });
-    }
-
-    public void InitCardMatchingPuzzle(UnityAction onClose, UnityAction onFinish)
-    {
-        OnPuzzleClose = onClose;
-        OnPuzzleFinish = onFinish;
-
-        FinishBtn.gameObject.SetActive(false);
+        base.InitPuzzle(closeEvent, finishedEvent);
 
         List<CardMatchData> dataPool = new();
         foreach (var data in caradDatas)
@@ -57,11 +37,6 @@ public class CardMatchPuzzleManager : MonoBehaviour
             deck.Add(c);
         }
     }
-
-    //private void Start()
-    //{
-    //    InitCardMatchingPuzzle(CloseAndDestroyPuzzle, CloseAndDestroyPuzzle);
-    //}
 
     private void Shuffle<T>(List<T> list)
     {
@@ -100,7 +75,7 @@ public class CardMatchPuzzleManager : MonoBehaviour
 
                 if (solvedCounter > caradDatas.Length - 1)
                 {
-                    FinishBtn.gameObject.SetActive(true);
+                    SetFinishBtnActiveState(true);
                 }
             }
             else
@@ -112,10 +87,5 @@ public class CardMatchPuzzleManager : MonoBehaviour
         });
         seq.AppendInterval(0.5f);
         seq.AppendCallback(() => checkCardIndicatorObj.SetActive(false));
-    }
-
-    private void CloseAndDestroyPuzzle()
-    {
-        Destroy(gameObject);
     }
 }

@@ -4,11 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SlidingPuzzle : MonoBehaviour
+public class SlidingPuzzle : PuzzleManager
 {
     [Header("Setup")]
-    [SerializeField] private Button closeBtn;
-    [SerializeField] private Button finishBtn;
     [SerializeField] private GameObject btnPrefab;
     [SerializeField] private Texture2D puzzleImage;
     [SerializeField] private RectTransform board;
@@ -23,8 +21,6 @@ public class SlidingPuzzle : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent<int> onMoveMade;   // passes the total move count
-    public UnityAction OnPuzzleFinish;
-    public UnityAction OnPuzzleClose;
 
     private int[] cells;             // cells[position] = tile id (row-major, row 0 = top)
     private RectTransform[] tiles;   // tiles[id]
@@ -37,31 +33,15 @@ public class SlidingPuzzle : MonoBehaviour
     public int Moves => moves;
     public bool IsSolved => isSolved;
 
-    private void Awake()
+    public override void InitPuzzle(UnityAction onClose, UnityAction onFinish)
     {
-        closeBtn.onClick.AddListener(() =>
-        {
-            CloseAndDestroyPuzzle();
-            OnPuzzleClose?.Invoke();
-        });
+        base.InitPuzzle(onClose, onFinish);
 
-        finishBtn.onClick.AddListener(() =>
-        {
-            CloseAndDestroyPuzzle();
-            OnPuzzleFinish?.Invoke();
-        });
-
-        finishBtn.gameObject.SetActive(false);
-    }
-
-    void Start()
-    {
-        if (startOnAwake)
-            NewGame();
+        NewGame();
     }
 
     [ContextMenu("New Game")]
-    public void NewGame()
+    private void NewGame()
     {
         StopAllCoroutines();
         isSliding = false;
@@ -74,11 +54,6 @@ public class SlidingPuzzle : MonoBehaviour
         PlaceAllTiles();
     }
 
-    public void InitSlidingPuzzle(UnityAction onClose, UnityAction onFinish)
-    {
-        OnPuzzleFinish = onFinish;
-        OnPuzzleClose = onClose;
-    }
 
     // ---------- Build ----------
     private void BuildTiles()
@@ -230,11 +205,6 @@ public class SlidingPuzzle : MonoBehaviour
         return true;
     }
 
-    private void CloseAndDestroyPuzzle()
-    {
-        Destroy(gameObject);
-    }
-
     // ---------- Solved ----------
     private void SolveSequence()
     {
@@ -245,7 +215,7 @@ public class SlidingPuzzle : MonoBehaviour
         raw.DOFade(1, revealDuration).OnComplete(() =>
         {
             raw.color = Color.white;
-            finishBtn.gameObject.SetActive(true);
+            SetFinishBtnActiveState(true);
             //onSolved?.Invoke();
         });
     }

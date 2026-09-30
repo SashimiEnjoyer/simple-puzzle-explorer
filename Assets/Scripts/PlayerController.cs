@@ -156,7 +156,10 @@ public class PlayerController : MonoBehaviour
         _hasAnimator = TryGetComponent(out _animator);
 
         if (!_canMove)
+        {
+            Animation(0,0);
             return;
+        }
 
         JumpAndGravity();
         GroundedCheck();
@@ -281,11 +284,16 @@ public class PlayerController : MonoBehaviour
         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                          new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
-        // update animator if using character
+        //// update animator if using character
+        Animation(_animationBlend, inputMagnitude);
+    }
+
+    private void Animation(float blend, float input)
+    {
         if (_hasAnimator)
         {
-            _animator.SetFloat(_animIDSpeed, _animationBlend);
-            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+            _animator.SetFloat(_animIDSpeed, blend);
+            _animator.SetFloat(_animIDMotionSpeed, input);
         }
     }
 

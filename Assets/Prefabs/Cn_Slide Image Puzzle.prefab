@@ -116,8 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bee8ab665d26b04fa4f0542ee6f089f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlidingPuzzle
-  closeBtn: {fileID: 6024965119137303057}
-  finishBtn: {fileID: 2252937175448329445}
+  CloseBtn: {fileID: 6024965119137303057}
+  FinishBtn: {fileID: 2252937175448329445}
   btnPrefab: {fileID: 1831213194077427331, guid: af6d28e5a420bfd49922fd4cd532eba5, type: 3}
   puzzleImage: {fileID: 2800000, guid: bfaa6a06070d3461a8c6b100e9fd503c, type: 3}
   board: {fileID: 7845572292022762928}

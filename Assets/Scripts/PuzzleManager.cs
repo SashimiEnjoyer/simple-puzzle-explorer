@@ -1,32 +1,46 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private GameObject cardMatchPuzzle;
-    [SerializeField] private GameObject slideImagePuzzle;
+    [SerializeField] private Button CloseBtn;
+    [SerializeField] private Button FinishBtn;
 
-    [ContextMenu("Open Card Puzzle")]
-    public void OpenCardMatchPuzzle()
+    protected UnityAction OnPuzzleFinish;
+    protected UnityAction OnPuzzleClose;
+
+
+    private void Awake()
     {
-        gameManager.CurrentState = GameState.Puzzle;
-
-        GameObject go = Instantiate(cardMatchPuzzle);
-        go.GetComponent<CardMatchPuzzleManager>().InitCardMatchingPuzzle(null, () =>
+        CloseBtn.onClick.AddListener(() =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CloseAndDestroyPuzzle();
+            OnPuzzleClose?.Invoke();
         });
+
+        FinishBtn.onClick.AddListener(() =>
+        {
+            CloseAndDestroyPuzzle();
+            OnPuzzleFinish?.Invoke();
+        });
+
+        SetFinishBtnActiveState(false);
     }
 
-    [ContextMenu("Open Sliding Image Puzzle")]
-    public void OpeSlideImagePuzzle()
+    public virtual void InitPuzzle(UnityAction closeEvent, UnityAction finishedEvent)
     {
-        gameManager.CurrentState = GameState.Puzzle;
+        OnPuzzleClose = closeEvent;
+        OnPuzzleFinish = finishedEvent;
+    }
 
-        GameObject go = Instantiate(slideImagePuzzle);
-        go.GetComponent<SlidingPuzzle>().InitSlidingPuzzle(null, () =>
-        {
-            gameManager.CurrentState = GameState.Play;
-        });
+    protected void CloseAndDestroyPuzzle()
+    {
+        Destroy(gameObject);
+    }
+
+    protected void SetFinishBtnActiveState(bool state)
+    {
+        FinishBtn.gameObject.SetActive(state);
     }
 }
