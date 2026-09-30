@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public UnityAction<GameState> OnGameStateChanged;
 
     [ContextMenu("Open Card Puzzle")]
-    public void OpenCardMatchPuzzle()
+    public void OpenCardMatchPuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
             return;
@@ -37,14 +37,16 @@ public class GameManager : MonoBehaviour
         go.GetComponent<CardMatchPuzzleManager>().InitPuzzle(() =>
         {
             gameManager.CurrentState = GameState.Play;
+            OnClosePuzzle?.Invoke();
         }, () =>
         {
             gameManager.CurrentState = GameState.Play;
+            OnPuzzleSolved?.Invoke();
         });
     }
 
     [ContextMenu("Open Sliding Image Puzzle")]
-    public void OpeSlideImagePuzzle()
+    public void OpeSlideImagePuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
             return;
@@ -55,14 +57,16 @@ public class GameManager : MonoBehaviour
         go.GetComponent<SlidingPuzzle>().InitPuzzle(() =>
         {
             gameManager.CurrentState = GameState.Play;
+            OnClosePuzzle?.Invoke();
         }, () =>
         {
             gameManager.CurrentState = GameState.Play;
+            OnPuzzleSolved?.Invoke();
         });
     }
 
     [ContextMenu("Open Lock Rotate Puzzle")]
-    public void OpeRotateLockPuzzle()
+    public void OpeRotateLockPuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
             return;
@@ -73,9 +77,11 @@ public class GameManager : MonoBehaviour
         go.GetComponent<RotateLockPuzzleManager>().InitPuzzle(() =>
         {
             gameManager.CurrentState = GameState.Play;
+            OnClosePuzzle?.Invoke();
         }, () =>
         {
             gameManager.CurrentState = GameState.Play;
+            OnPuzzleSolved?.Invoke();
         });
     }
 

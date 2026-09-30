@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
-    [SerializeField] private GameObject interactableIndicator;
-    [SerializeField] private bool interactOnce;
-    [SerializeField] private UnityEvent OnTouch;
+    [SerializeField] protected GameObject interactableIndicator;
+    [SerializeField] protected bool interactOnce;
+    [SerializeField] protected UnityEvent OnTouch;
 
-    private bool isAlreadyInteracted = false;
+    protected bool isAlreadyInteracted = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,9 +16,10 @@ public class Interactable : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            interactableIndicator.SetActive(false);
-            OnTouch?.Invoke();
-            isAlreadyInteracted = true;
+            if(interactableIndicator)
+                interactableIndicator.SetActive(false);
+            
+            ExecuteEvent();
         }
     }
 
@@ -29,7 +30,14 @@ public class Interactable : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            interactableIndicator.SetActive(true);
+            if (interactableIndicator)
+                interactableIndicator.SetActive(true);
         }
+    }
+
+    protected virtual void ExecuteEvent()
+    {
+        OnTouch?.Invoke();
+        isAlreadyInteracted = true;
     }
 }
