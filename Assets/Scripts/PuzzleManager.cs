@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+public enum PuzzleType { CardMatch, ImageSlide, RotateLock}
+
 public class PuzzleManager : MonoBehaviour
 {
     [SerializeField] private Button CloseBtn;

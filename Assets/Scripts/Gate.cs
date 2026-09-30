@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Gate : Interactable
 {
+    [SerializeField] private bool usePuzzle;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Transform[] gates;
     [SerializeField] private Vector3[] rotateTarget;
@@ -10,14 +11,18 @@ public class Gate : Interactable
     protected override void ExecuteEvent()
     {
         base.ExecuteEvent();
-        gameManager.OpeRotateLockPuzzle(()=>isAlreadyInteracted = false , OpenTheGate);
+
+        if (usePuzzle)
+            gameManager.OpeRotateLockPuzzle(() => isAlreadyInteracted = false, OpenTheGate);
+        else
+            OpenTheGate();
     }
 
     private void OpenTheGate()
     {
         for (int i = 0; i < gates.Length; i++)
         {
-            gates[i].DORotate(rotateTarget[i], 0.5f);
+            gates[i].DOLocalRotate(rotateTarget[i], 0.5f);
         }
 
     }

@@ -16,16 +16,16 @@ public class Interactable : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            if(interactableIndicator)
+            if (interactableIndicator)
                 interactableIndicator.SetActive(false);
-            
+
             ExecuteEvent();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!interactOnce)
+        if (interactOnce && isAlreadyInteracted)
             return;
 
         if (other.CompareTag("Player"))

@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     }
     public UnityAction<GameState> OnGameStateChanged;
 
-    [ContextMenu("Open Card Puzzle")]
     public void OpenCardMatchPuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
@@ -45,7 +44,6 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    [ContextMenu("Open Sliding Image Puzzle")]
     public void OpeSlideImagePuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
@@ -65,7 +63,6 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    [ContextMenu("Open Lock Rotate Puzzle")]
     public void OpeRotateLockPuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
@@ -84,5 +81,4 @@ public class GameManager : MonoBehaviour
             OnPuzzleSolved?.Invoke();
         });
     }
-
 }

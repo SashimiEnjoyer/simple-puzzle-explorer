@@ -43,6 +43,11 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+		public void OnPause(InputValue value)
+		{
+			Debug.Log(value.isPressed);
+		}
 #endif
 
 
