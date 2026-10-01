@@ -1,10 +1,14 @@
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
+    [SerializeField] protected StarterAssetsInputs input;
+    [SerializeField] protected UiManager uiManager;
     [SerializeField] protected GameObject interactableIndicator;
     [SerializeField] protected bool interactOnce;
+    [SerializeField] protected bool useOnTrigger;
     [SerializeField] protected UnityEvent OnTouch;
 
     protected bool isAlreadyInteracted = false;
@@ -16,8 +20,15 @@ public class Interactable : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            if (interactableIndicator)
-                interactableIndicator.SetActive(false);
+            if (!useOnTrigger)
+            {
+                input.OnInteractPressed = ExecuteEvent;
+            }
+
+            SetIndicatorUi(true);
+
+            if (!useOnTrigger)
+                return;
 
             ExecuteEvent();
         }
@@ -30,9 +41,18 @@ public class Interactable : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            if (interactableIndicator)
-                interactableIndicator.SetActive(true);
+            if (!useOnTrigger)
+            {
+                input.OnInteractPressed = null;
+            }
+
+            SetIndicatorUi(false);
         }
+    }
+
+    protected void SetIndicatorUi(bool state)
+    {
+        uiManager.ShowInteractIndicator(state);
     }
 
     protected virtual void ExecuteEvent()

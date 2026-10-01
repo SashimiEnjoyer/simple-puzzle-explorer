@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -7,7 +9,7 @@ namespace StarterAssets
 {
 	public class StarterAssetsInputs : MonoBehaviour
 	{
-		[Header("Character Input Values")]
+        [Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
@@ -19,6 +21,9 @@ namespace StarterAssets
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
+
+		public UnityAction OnPausePressed;
+		public UnityAction OnInteractPressed;
 
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
@@ -46,12 +51,17 @@ namespace StarterAssets
 
 		public void OnPause(InputValue value)
 		{
-			Debug.Log(value.isPressed);
+			OnPausePressed?.Invoke();
 		}
+
+        public void OnInteract(InputValue value)
+        {
+            OnInteractPressed?.Invoke();
+        }
 #endif
 
 
-		public void MoveInput(Vector2 newMoveDirection)
+        public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
 		} 

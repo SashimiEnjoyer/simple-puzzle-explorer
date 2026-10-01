@@ -64,7 +64,7 @@ public class CardMatchPuzzleManager : PuzzleManager
         checkCardIndicatorObj.SetActive(true);
 
         Sequence seq = DOTween.Sequence();
-        seq.AppendInterval(0.5f);
+        seq.AppendInterval(0.75f);
         seq.AppendCallback(() =>
         {
             if (tempCard.CardData.type == card.CardData.type)
@@ -85,7 +85,7 @@ public class CardMatchPuzzleManager : PuzzleManager
             }
             tempCard = null;
         });
-        seq.AppendInterval(0.5f);
+        seq.AppendInterval(0.1f);
         seq.AppendCallback(() => checkCardIndicatorObj.SetActive(false));
     }
 }

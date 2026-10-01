@@ -1,11 +1,12 @@
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum GameState { Play, Puzzle}
+public enum GameState { Play, Puzzle, Pause}
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
+    [SerializeField] private StarterAssetsInputs input;
     [SerializeField] private GameObject cardMatchPuzzle;
     [SerializeField] private GameObject slideImagePuzzle;
     [SerializeField] private GameObject rotateLockPuzzle;
@@ -25,21 +26,32 @@ public class GameManager : MonoBehaviour
     }
     public UnityAction<GameState> OnGameStateChanged;
 
+    private void Awake()
+    {
+        input.OnPausePressed += () =>
+        {
+            if (currentState == GameState.Pause)
+                CurrentState = GameState.Play;
+            else if (currentState == GameState.Play)
+                CurrentState = GameState.Pause;
+        };
+    }
+
     public void OpenCardMatchPuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
     {
         if (currentState == GameState.Puzzle)
             return;
 
-        gameManager.CurrentState = GameState.Puzzle;
+        CurrentState = GameState.Puzzle;
 
         GameObject go = Instantiate(cardMatchPuzzle);
         go.GetComponent<CardMatchPuzzleManager>().InitPuzzle(() =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CurrentState = GameState.Play;
             OnClosePuzzle?.Invoke();
         }, () =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CurrentState = GameState.Play;
             OnPuzzleSolved?.Invoke();
         });
     }
@@ -49,16 +61,16 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.Puzzle)
             return;
 
-        gameManager.CurrentState = GameState.Puzzle;
+        CurrentState = GameState.Puzzle;
 
         GameObject go = Instantiate(slideImagePuzzle);
         go.GetComponent<SlidingPuzzle>().InitPuzzle(() =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CurrentState = GameState.Play;
             OnClosePuzzle?.Invoke();
         }, () =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CurrentState = GameState.Play;
             OnPuzzleSolved?.Invoke();
         });
     }
@@ -68,17 +80,27 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.Puzzle)
             return;
 
-        gameManager.CurrentState = GameState.Puzzle;
+        CurrentState = GameState.Puzzle;
 
         GameObject go = Instantiate(rotateLockPuzzle);
         go.GetComponent<RotateLockPuzzleManager>().InitPuzzle(() =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CurrentState = GameState.Play;
             OnClosePuzzle?.Invoke();
         }, () =>
         {
-            gameManager.CurrentState = GameState.Play;
+            CurrentState = GameState.Play;
             OnPuzzleSolved?.Invoke();
         });
+    }
+
+    public void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

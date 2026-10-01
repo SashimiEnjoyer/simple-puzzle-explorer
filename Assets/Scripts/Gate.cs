@@ -20,6 +20,11 @@ public class Gate : Interactable
 
     private void OpenTheGate()
     {
+        if (interactableIndicator)
+            interactableIndicator.SetActive(false);
+
+        SetIndicatorUi(false);
+
         for (int i = 0; i < gates.Length; i++)
         {
             gates[i].DOLocalRotate(rotateTarget[i], 0.5f);

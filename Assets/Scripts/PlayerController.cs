@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
 #endif
     private Animator _animator;
     private CharacterController _controller;
-    private StarterAssetsInputs _input;
+    [SerializeField] private StarterAssetsInputs _input;
     private GameObject _mainCamera;
 
     private const float _threshold = 0.01f;
@@ -137,9 +137,9 @@ public class PlayerController : MonoBehaviour
 
         _hasAnimator = TryGetComponent(out _animator);
         _controller = GetComponent<CharacterController>();
-        _input = GetComponent<StarterAssetsInputs>();
+        //_input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM
-        _playerInput = GetComponent<PlayerInput>();
+        _playerInput = FindAnyObjectByType<PlayerInput>();
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
