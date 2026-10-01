@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
             if(value != currentState)
             {
                 currentState = value;
+                input.SetCursorState(currentState == GameState.Play);
                 OnGameStateChanged?.Invoke(currentState);
             }
         }
@@ -30,11 +31,14 @@ public class GameManager : MonoBehaviour
     {
         input.OnPausePressed += () =>
         {
-            if (currentState == GameState.Pause)
-                CurrentState = GameState.Play;
-            else if (currentState == GameState.Play)
+            if (currentState == GameState.Play)
                 CurrentState = GameState.Pause;
         };
+    }
+
+    private void Start()
+    {
+        CurrentState = GameState.Play;
     }
 
     public void OpenCardMatchPuzzle(UnityAction OnClosePuzzle, UnityAction OnPuzzleSolved)
@@ -94,6 +98,12 @@ public class GameManager : MonoBehaviour
         });
     }
 
+    public void ResumeGame()
+    {
+        if (currentState == GameState.Pause)
+            CurrentState = GameState.Play;
+    }
+
     public void RestartGame()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
@@ -103,4 +113,5 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
+
 }
